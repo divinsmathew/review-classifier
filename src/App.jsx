@@ -30,6 +30,8 @@ const App = () => {
         const data = await response.json();
         setClassifiedData(data.results);
         setIsUploading(false);
+
+        if (data.results.length === 0) alert("No results found");
     };
 
     return (
@@ -40,7 +42,11 @@ const App = () => {
             </header>
             <main>
                 <div className="input-container">
-                    <div>Upload your CSV dataset here:</div>
+                    <div>Upload your CSV dataset here.</div>
+                    <div className="warning-text">
+                        Please make sure that reviews in file are free of
+                        gibberish and emoticons.
+                    </div>
                     <input
                         ref={filePickerRef}
                         type="file"

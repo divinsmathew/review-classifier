@@ -30,9 +30,17 @@ header {
     margin-top: 4rem;
     font-weight: 500;
 }
+
+.warning-text {
+    margin-top: 0.5rem;
+    font-size: 0.89rem;
+    color: #4e4e4e;
+}
+
 #file-picker {
     display: none;
 }
+
 .upload-button {
     margin-top: 2rem;
     background-color: #009879;
@@ -42,16 +50,20 @@ header {
     color: #fff;
     cursor: pointer;
 }
+
 .upload-button[disabled] {
     background-color: #ccc;
     cursor: not-allowed;
 }
+
 .upload-button:not([disabled]):hover {
     background-color: #00ab89;
 }
+
 .upload-button:not([disabled]):active {
     background-color: #00725c;
 }
+
 .file-selected-label {
     margin-top: 1.5rem;
     font-weight: 400;
