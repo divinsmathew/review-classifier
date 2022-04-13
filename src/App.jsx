@@ -1,14 +1,12 @@
 import { useRef, useState } from "react";
 import "./App.css";
 
-function App() {
+const App = () => {
     const filePickerRef = useRef();
     const [selectedFileName, setSelectedFileName] =
         useState("No file selected");
     const [isUploading, setIsUploading] = useState(false);
     const [classifiedData, setClassifiedData] = useState([]);
-
-    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const fileSelected = async (event) => {
         setSelectedFileName(event.target.files[0].name);
@@ -104,6 +102,6 @@ function App() {
             </main>
         </div>
     );
-}
+};
 
 export default App;
