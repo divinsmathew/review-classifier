@@ -5,15 +5,18 @@ function App() {
     const filePickerRef = useRef();
     const [selectedFileName, setSelectedFileName] =
         useState("No file selected");
-    const [isUploadButtonDisabled, setIsUploadButtonDisabled] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [classifiedData, setClassifiedData] = useState([]);
+
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const fileSelected = (event) => {
         setSelectedFileName(event.target.files[0].name);
-        setIsUploadButtonDisabled(true);
+        setIsUploading(true);
         uploadFile(event.target.files[0]);
     };
 
-    const uploadFile = (file) => {
+    const uploadFile = async (file) => {
         const fileData = new FormData();
         fileData.append("file", file);
         fileData.append("fileName", file.name);
@@ -23,6 +26,9 @@ function App() {
         const headers = new Headers();
         headers.append("Accept", "application/json");
         headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
+
+        setClassifiedData([]);
+        setIsUploading(true);
 
         fetch("https://flask-review-app.herokuapp.com/predict", {
             method: "POST",
@@ -34,8 +40,11 @@ function App() {
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
+                setClassifiedData(data.results);
             });
+
+        await sleep(2000);
+        setIsUploading(false);
     };
 
     return (
@@ -58,14 +67,55 @@ function App() {
                     <button
                         className="upload-button"
                         onClick={() => filePickerRef.current.click()}
-                        disabled={isUploadButtonDisabled}
+                        disabled={isUploading}
                     >
-                        {isUploadButtonDisabled ? "Uploading..." : "Upload"}
+                        {isUploading ? "Uploading..." : "Upload"}
                     </button>
 
                     <div className="file-selected-label">
                         {selectedFileName}
                     </div>
+
+                    {classifiedData.length > 0 && (
+                        <article>
+                            <div className="title">
+                                Found {classifiedData.length} Results:
+                            </div>
+                            <div className="classified-data-container">
+                                <table className="table table-bordered table-hover table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Review</th>
+                                            <th>Stars</th>
+                                            <th>URL</th>
+                                            <th>User Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {classifiedData.map((data, index) => (
+                                            <tr
+                                                className="classified-data"
+                                                key={index}
+                                            >
+                                                <td>{data.review}</td>
+                                                <td>{data.star}</td>
+                                                <td>
+                                                    <a
+                                                        href={data.url}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
+                                                        Click to open
+                                                    </a>
+                                                </td>
+                                                <td>{data.user_name}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </article>
+                    )}
                 </div>
             </main>
         </div>
