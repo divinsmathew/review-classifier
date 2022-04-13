@@ -35,6 +35,8 @@ header {
     margin-top: 0.5rem;
     font-size: 0.89rem;
     color: #4e4e4e;
+    padding-inline: 0.8rem;
+    text-align: center;
 }
 
 #file-picker {
