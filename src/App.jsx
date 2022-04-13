@@ -10,37 +10,27 @@ function App() {
 
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    const fileSelected = (event) => {
+    const fileSelected = async (event) => {
         setSelectedFileName(event.target.files[0].name);
         setIsUploading(true);
-        uploadFile(event.target.files[0]);
-
+        await uploadFile(event.target.files[0]);
         filePickerRef.current.value = null;
     };
 
     const uploadFile = async (file) => {
         const fileData = new FormData();
         fileData.append("file", file);
-        fileData.append("fileName", file.name);
-        fileData.append("fileType", file.type);
-        fileData.append("fileSize", file.size);
-
-        const headers = new Headers();
-        headers.append("Accept", "application/json");
-        headers.append("Access-Control-Allow-Origin", "http://localhost:3000");
-
         setClassifiedData([]);
         setIsUploading(true);
-
-        fetch("https://flask-review-app.herokuapp.com/predict", {
-            method: "POST",
-            body: fileData,
-            headers: headers,
-        })
-            .then((response) => response.json())
-            .then((data) => setClassifiedData(data.results));
-
-        await sleep(2000);
+        const response = await fetch(
+            "https://flask-review-app.herokuapp.com/predict",
+            {
+                method: "POST",
+                body: fileData,
+            }
+        );
+        const data = await response.json();
+        setClassifiedData(data.results);
         setIsUploading(false);
     };
 
@@ -60,7 +50,6 @@ function App() {
                         accept=".csv"
                         onChange={fileSelected}
                     />
-
                     <button
                         className="upload-button"
                         onClick={() => filePickerRef.current.click()}
@@ -68,11 +57,9 @@ function App() {
                     >
                         {isUploading ? "Uploading..." : "Upload"}
                     </button>
-
                     <div className="file-selected-label">
                         {selectedFileName}
                     </div>
-
                     {classifiedData.length > 0 && (
                         <article>
                             <div className="title">
