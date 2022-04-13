@@ -14,6 +14,8 @@ function App() {
         setSelectedFileName(event.target.files[0].name);
         setIsUploading(true);
         uploadFile(event.target.files[0]);
+
+        filePickerRef.current.value = null;
     };
 
     const uploadFile = async (file) => {
@@ -35,13 +37,8 @@ function App() {
             body: fileData,
             headers: headers,
         })
-            .then((response) => {
-                console.log(response);
-                return response.json();
-            })
-            .then((data) => {
-                setClassifiedData(data.results);
-            });
+            .then((response) => response.json())
+            .then((data) => setClassifiedData(data.results));
 
         await sleep(2000);
         setIsUploading(false);
