@@ -31,16 +31,18 @@ header {
     font-weight: 500;
 }
 
+textarea {
+    min-width: 500px;
+    min-height: 250px;
+    padding: 0.8rem 1rem;
+}
+
 .warning-text {
-    margin-top: 0.5rem;
+    margin-block: 0.75rem;
     font-size: 0.89rem;
     color: #4e4e4e;
     padding-inline: 0.8rem;
     text-align: center;
-}
-
-#file-picker {
-    display: none;
 }
 
 .upload-button {
@@ -121,4 +123,41 @@ table tbody tr:last-of-type {
 table tbody tr.active-row {
     font-weight: bold;
     color: #009879;
+}
+
+.summary-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+    gap: 2rem;
+}
+.summary-text {
+    border: #00725c 2px solid;
+    padding: 0.9rem 1.2rem;
+}
+
+.summary-title {
+    display: block;
+    color: #009879;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+}
+
+.sentiment-icon {
+    padding: 0.2rem 1.5rem;
+    border-radius: 5px;
+    font-size: 0.95rem;
+}
+.positive {
+    background-color: #d5ffa6;
+    color: #00725c;
+    border: #00725c 1px solid;
+}
+.negative {
+    background-color: #ffd5a6;
+    color: #d50000;
+    border: #d50000 1px solid;
 }
